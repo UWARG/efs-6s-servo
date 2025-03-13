@@ -122,7 +122,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_ADC_Start_DMA(&hadc1, adcValues, 5);
+    readADC(&hadc1);
     sendCANTx();
     periodicCANTasks();
     /* USER CODE END WHILE */
