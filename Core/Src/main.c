@@ -119,17 +119,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t nextRunTime = 0;
   while (1)
   {
     sendCANTx();
-
-    uint32_t now = HAL_GetTick();
-    if(now >= nextRunTime)
-    {
-      periodicCANTasks();
-      nextRunTime = now + 1000;
-    }
+    periodicCANTasks();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include "stm32l4xx_hal.h"
 
 /**
   * @brief  Configure and start servo PWM generation.

@@ -282,6 +282,13 @@ void sendCANTx(void)
 
 void periodicCANTasks(void)
 {
-  canardCleanupStaleTransfers(&canard, HAL_GetTick() * 1000U);
-  sendNodeStatus();
+  static uint32_t nextRunTime = 0;
+
+  if(HAL_GetTick() >= nextRunTime)
+  {
+    nextRunTime += 1000U;
+
+    canardCleanupStaleTransfers(&canard, HAL_GetTick() * 1000U);
+    sendNodeStatus();
+  }
 }

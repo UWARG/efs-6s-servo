@@ -1,4 +1,5 @@
 #include "servo.h"
+#include "stm32l4xx_hal.h"
 
 #define SERVO_COUNT 4
 
