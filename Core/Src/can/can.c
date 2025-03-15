@@ -13,7 +13,8 @@
 #define HARDWARE_MINOR_VERSION 0U
 
 extern CAN_HandleTypeDef hcan1;
-extern struct uavcan_protocol_NodeStatus nodeStatus;
+
+struct uavcan_protocol_NodeStatus nodeStatus;
 
 static CanardInstance canard;
 static uint8_t canardMemPool[1024];

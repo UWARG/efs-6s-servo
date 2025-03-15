@@ -1,25 +1,9 @@
 #include "servo.h"
-#include "stm32l4xx_hal.h"
 
 #define SERVO_COUNT 4
 
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim15;
-
-typedef struct {
-  uint8_t actuatorID;
-
-  TIM_HandleTypeDef *timer;
-  uint32_t channel;
-
-  float minDutyCycle;
-  float maxDutyCycle;
-
-  // internal variables to be auto-initialized
-  uint32_t minCCR;
-  uint32_t maxCCR;
-  uint64_t period;
-} Servo_t;
 
 static Servo_t servos[SERVO_COUNT] = {
   {
@@ -63,7 +47,8 @@ void initServos(void)
     servos[i].maxCCR = servos[i].maxDutyCycle * period;
     servos[i].period = HAL_RCC_GetPCLK1Freq() / (prescaler * period) * 1e6;
 
-    __HAL_TIM_SET_COMPARE(servos[i].timer, servos[i].channel, servos[i].minCCR);
+    uint32_t halfDutyCycle = (servos[i].minCCR + servos[i].maxCCR) / 2.0;
+    __HAL_TIM_SET_COMPARE(servos[i].timer, servos[i].channel, halfDutyCycle);
     HAL_TIM_PWM_Start (servos[i].timer, servos[i].channel);
   }
 }

@@ -1,68 +1,54 @@
-#include "adc.h"
+#include "neopixel.h"
 #include "stm32l4xx_hal.h"
 
-#define LED_BUFFER_SIZE 500
-
-#define BIT1_CCR_VALUE 56
+#define LED_BUFFER_SIZE 300
 #define BIT0_CCR_VALUE 24
-
-#define CURRENT_THRESHOLD1 2.5
-#define CURRENT_THRESHOLD2 5.0
-
-typedef struct {
-  uint8_t green;
-  uint8_t red;
-  uint8_t blue;
-} LEDColour_t;
+#define BIT1_CCR_VALUE 64
 
 extern TIM_HandleTypeDef htim2;
-extern Circuit_t circuit;
 
+StatusColours_e targetColour = STATUS_OK_COLOUR;
+
+static StatusColours_e currentColour = STATUS_OK_COLOUR;
+static LEDColour_t green  = {10, 0, 0};
+static LEDColour_t yellow = {8, 12, 0};
+static LEDColour_t red    = {0, 10, 0};
 static uint32_t ledBuffer[LED_BUFFER_SIZE];
-static LEDColour_t curColour;
-static uint8_t curColourMutex;
 
-static void setColour(float current)
+static void updateLEDBuffer(LEDColour_t *colour)
 {
-  curColourMutex = 1;
-  if(current < CURRENT_THRESHOLD1)
+  for(int i = 0; i < 8; ++i)
   {
-    curColour.green = 2;
-    curColour.red   = 0;
-    curColour.blue  = 0;
+    *(ledBuffer + i) = colour->green & (1U << (7 - i)) ? BIT1_CCR_VALUE : BIT0_CCR_VALUE;
   }
-  else if(current < CURRENT_THRESHOLD2)
+
+  for(int i = 0; i < 8; ++i)
   {
-    curColour.green = 1;
-    curColour.red   = 1;
-    curColour.blue  = 0;
+    *(ledBuffer + 8 + i) = colour->red & (1U << (7 - i)) ? BIT1_CCR_VALUE : BIT0_CCR_VALUE;
   }
-  else
+
+  for(int i = 0; i < 8; ++i)
   {
-    curColour.green = 0;
-    curColour.red   = 0;
-    curColour.blue  = 2;
+    *(ledBuffer + 16 + i) = colour->blue & (1U << (7 - i)) ? BIT1_CCR_VALUE : BIT0_CCR_VALUE;
   }
-  curColourMutex = 0;
 }
 
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
-  if(!curColourMutex)
+  if(targetColour != currentColour)
   {
-    for(int i = 0; i < 8; ++i)
-    {
-      *(ledBuffer + i) = (curColour.green & (1U << i)) ? BIT1_CCR_VALUE : BIT0_CCR_VALUE;
-    }
+    currentColour = targetColour;
 
-    for(int i = 0; i < 8; ++i)
+    switch(currentColour)
     {
-      *(ledBuffer + 8 + i) = (curColour.red & (1U << i)) ? BIT1_CCR_VALUE : BIT0_CCR_VALUE;
-    }
-
-    for(int i = 0; i < 8; ++i)
-    {
-      *(ledBuffer + 16 + i) = (curColour.blue & (1U << i)) ? BIT1_CCR_VALUE : BIT0_CCR_VALUE;
+      case STATUS_OK_COLOUR:
+        updateLEDBuffer(&green);
+        break;
+      case STATUS_WARNING_COLOUR:
+        updateLEDBuffer(&yellow);
+        break;
+      default:
+        updateLEDBuffer(&red);
     }
   }
 
@@ -71,17 +57,7 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 
 void initNeopixel(void)
 {
+  updateLEDBuffer(&green);
   HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, ledBuffer, LED_BUFFER_SIZE);
 }
 
-void periodicNeopixelTasks(void)
-{
-  static uint32_t nextRunTime = 0;
-
-  if(HAL_GetTick() >= nextRunTime)
-  {
-    nextRunTime += 250U;
-
-    setColour(circuit.currentBATT);
-  }
-}
