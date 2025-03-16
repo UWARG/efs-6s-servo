@@ -15,25 +15,25 @@ static VoltageMonitor_t moduleVoltages;
 static VoltageSense_t v[] = {
   {
     // battery rail voltage
-	&rawADCValues[1],
+    &rawADCValues[1],
     130E3,
     10E3
   },
   {
     // 6v rail voltage
-	&rawADCValues[2],
+    &rawADCValues[2],
     30E3,
     10E3
   },
   {
     // 5v rail voltage
-	&rawADCValues[3],
+    &rawADCValues[3],
     23.2E3,
     10E3
   },
   {
     // 3v3 rail voltage
-	&rawADCValues[4],
+    &rawADCValues[4],
     10E3,
     3.3E3
   }
