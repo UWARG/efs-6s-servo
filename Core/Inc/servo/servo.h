@@ -1,6 +1,22 @@
 #pragma once
 
 #include <stdint.h>
+#include "stm32l4xx_hal.h"
+
+typedef struct {
+  uint8_t actuatorID;
+
+  TIM_HandleTypeDef *timer;
+  uint32_t channel;
+
+  float minDutyCycle;
+  float maxDutyCycle;
+
+  // internal variables to be auto-initialized
+  uint32_t minCCR;
+  uint32_t maxCCR;
+  uint64_t period;
+} Servo_t;
 
 /**
   * @brief  Configure and start servo PWM generation.
