@@ -4,8 +4,8 @@
 #include "servo.h"
 #include "stm32l4xx_hal.h"
 
-#define CAN_NODE_NAME          "6SSERVO"
-#define CAN_NODE_ID            69U
+#define CAN_NODE_NAME          "SSD1"
+#define CAN_NODE_ID            70U
 #define COMMIT_HASH            0U
 #define SOFTWARE_MAJOR_VERSION 1U
 #define SOFTWARE_MINOR_VERSION 0U

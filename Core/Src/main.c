@@ -111,7 +111,6 @@ int main(void)
   {
     sendCANTx();
     periodicCANTasks();
-    periodicADCTasks();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

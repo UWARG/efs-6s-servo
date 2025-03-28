@@ -27,7 +27,7 @@ void initServos(void)
 
     uint32_t halfDutyCycle = (servos[i].minCCR + servos[i].maxCCR) / 2.0;
     __HAL_TIM_SET_COMPARE(servos[i].timer, servos[i].channel, halfDutyCycle);
-    HAL_TIM_PWM_Start (servos[i].timer, servos[i].channel);
+    HAL_TIMEx_PWMN_Start (servos[i].timer, servos[i].channel);
   }
 }
 
@@ -57,7 +57,7 @@ void percentageActuation(float percentage, uint8_t actuatorID)
 
     percentage = (percentage + 1) / 2;
     uint32_t ccrValue = servos[i].minCCR + percentage * (servos[i].maxCCR - servos[i].minCCR);
-    __HAL_TIM_SET_COMPARE(servos[i].timer, servos[i].channel, ccrValue);
++    __HAL_TIM_SET_COMPARE(servos[i].timer, servos[i].channel, ccrValue);
     return;
   }
 }
