@@ -126,12 +126,12 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     PB0     ------> ADC1_IN15
     PB1     ------> ADC1_IN16
     */
-    GPIO_InitStruct.Pin = VSENSE_6V_Pin|VSENSE_BAT_Pin|VSENSE_3V3_Pin;
+    GPIO_InitStruct.Pin = VSENSE_3V3_Pin|VSENSE_5V_Pin|VSENSE_6V_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = VSENSE_5V_Pin|CSENSE_BAT_Pin;
+    GPIO_InitStruct.Pin = VSENSE_54V_Pin|CSENSE_BAT_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -185,9 +185,9 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
     PB0     ------> ADC1_IN15
     PB1     ------> ADC1_IN16
     */
-    HAL_GPIO_DeInit(GPIOA, VSENSE_6V_Pin|VSENSE_BAT_Pin|VSENSE_3V3_Pin);
+    HAL_GPIO_DeInit(GPIOA, VSENSE_3V3_Pin|VSENSE_5V_Pin|VSENSE_6V_Pin);
 
-    HAL_GPIO_DeInit(GPIOB, VSENSE_5V_Pin|CSENSE_BAT_Pin);
+    HAL_GPIO_DeInit(GPIOB, VSENSE_54V_Pin|CSENSE_BAT_Pin);
 
     /* ADC1 DMA DeInit */
     HAL_DMA_DeInit(hadc->DMA_Handle);
@@ -349,7 +349,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
     PA9     ------> TIM1_CH2
     PA10     ------> TIM1_CH3
     */
-    GPIO_InitStruct.Pin = PWM_1_Pin|PWM_2_Pin|PWM_3_Pin;
+    GPIO_InitStruct.Pin = PWM_3_Pin|PWM_2_Pin|PWM_1_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
