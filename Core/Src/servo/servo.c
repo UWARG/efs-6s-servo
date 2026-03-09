@@ -7,28 +7,28 @@ extern TIM_HandleTypeDef htim15;
 
 static Servo_t servos[SERVO_COUNT] = {
   {
-    1U,
-    &htim1,
-    TIM_CHANNEL_1,
-    0.05,
-    0.10
-  },
-  {
-    2U,
-    &htim1,
-    TIM_CHANNEL_2,
-    0.05,
-    0.10
-  },
-  {
-    4U,
+    5U,
     &htim1,
     TIM_CHANNEL_3,
     0.05,
     0.10
   },
   {
-    5U,
+    6U,
+    &htim1,
+    TIM_CHANNEL_2,
+    0.05,
+    0.10
+  },
+  {
+    7U,
+    &htim1,
+    TIM_CHANNEL_1,
+    0.05,
+    0.10
+  },
+  {
+    8U,
     &htim15,
     TIM_CHANNEL_1,
     0.05,
