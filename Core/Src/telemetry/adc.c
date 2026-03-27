@@ -15,25 +15,25 @@ static VoltageMonitor_t moduleVoltages;
 static VoltageSense_t v[] = {
   {
     // battery rail voltage
-    &rawADCValues[1],
-    130E3,
-    10E3
+    &rawADCValues[3],
+    560E3,
+    18E3
   },
   {
     // 6v rail voltage
-    &rawADCValues[2],
+    &rawADCValues[4],
     30E3,
     10E3
   },
   {
     // 5v rail voltage
-    &rawADCValues[3],
+    &rawADCValues[1],
     23.2E3,
     10E3
   },
   {
     // 3v3 rail voltage
-    &rawADCValues[4],
+    &rawADCValues[2],
     10E3,
     3.3E3
   }
@@ -43,8 +43,8 @@ static CurrentSense_t c[] = {
   {
     // battery rail current
     &rawADCValues[0],
-    0.22,
-    100
+    0.15,
+    20
   }
 };
 
